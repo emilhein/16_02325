@@ -20,86 +20,13 @@ public class Controller {
 			writer = new DataOutputStream(socket.getOutputStream());
 			
 			step1();
+			step2();
+			step3();
+			step4();
+			step5();
+			step6();
 			
-			// // Step 2. Fejlet.
-			// Send:	D "Ukendt vare."
-			// Modtag:	D A
-			// Vent 2 sekunder.
-			// Send:	DW // Er dette nødvendigt?
-			// Modtag:	DW A // Er dette nødvendigt?
-			// Gentag step 2.
-			// 
-			// // Step 3. Bekræft vare.
-			// Send:	RM20 4 "Korrekt vare?" "#" "1/0" // # er vare navnet.
-			// Modtag:	RM20 B
-			// Modtag:	RM20 A "#" // # er den indtastede værdi.
-			// Valider input og retuner til step 2 eller fortsæt til step 4.
-			// // Step 3. Fejlet.
-			// Send:	D "Ugyldigt input."
-			// Modtag:	D A
-			// Vent 2 sekunder.
-			// Send:	DW // Er dette nødvendigt?
-			// Modtag:	DW A // Er dette nødvendigt?
-			// Gentag step 3.
-			// 
-			// // Step 4. Tarer vægt.
-			// Send:	RM20 4 "Placer skål på vægten." "" "1/0"
-			// Modtag:	RM20 B
-			// Modtag:	RM20 A "#" // # er den indtastede værdi.
-			// Valider input og retuner til step 3 eller fortsæt.
-			// Send:	T
-			// Modtag:	T S # kg // # er den nye tara, punktum bruges som decimaltegn.
-			// // Step 4. Fejlet.
-			// Send:	D "Ugyldigt input."
-			// Modtag:	D A
-			// Vent 2 sekunder.
-			// Send:	DW // Er dette nødvendigt?
-			// Modtag:	DW A // Er dette nødvendigt?
-			// Gentag step 4.
-			// 
-			// // Step 5. Afvej vare.
-			// Send:	RM20 4 "Placer vare i skålen." "" "1/0"
-			// Modtag:	RM20 B
-			// Modtag:	RM20 A "#" // # er den indtastede værdi.
-			// Valider input og retuner til step 4 eller fortsæt.
-			// Send:	S
-			// Modtag:	S S # kg // # er netto vægten, punktum bruges som decimaltegn.
-			// // Step 5. Fejlet.
-			// Send:	D "Ugyldigt input."
-			// Modtag:	D A
-			// Vent 2 sekunder.
-			// Send:	DW // Er dette nødvendigt?
-			// Modtag:	DW A // Er dette nødvendigt?
-			// Gentag step 5.
-			// 
-			// // Step 6. Kontroller brutto vægt.
-			// Send:	RM20 4 "Ryd vægten." "" "1/0"
-			// Modtag:	RM20 B
-			// Modtag:	RM20 A "#" // # er den indtastede værdi.
-			// Valider input og retuner til step 5 eller fortsæt.
-			// Send:	T
-			// Modtag:	T S # kg // # er den nye tara, punktum bruges som decimaltegn.
-			// Kontroller brutto vægt.
-			// Send:	D "Brutto kontrol ok."
-			// Modtag:	D A
-			// Vent 2 sekunder.
-			// Send:	DW // Er dette nødvendigt?
-			// Modtag:	DW A // Er dette nødvendigt?
-			// Opdater lagerbeholdningen, skriv til loggen og retuner til step 1.
-			// // Step 6. Fejlet (1).
-			// Send:	D "Ugyldigt input."
-			// Modtag:	D A
-			// Vent 2 sekunder.
-			// Send:	DW // Er dette nødvendigt?
-			// Modtag:	DW A // Er dette nødvendigt?
-			// Gentag step 6.
-			// // Step 6. Fejlet (2).
-			// Send:	D "Brutto kontrol fejlet."
-			// Modtag:	D A
-			// Vent 2 sekunder.
-			// Send:	DW // Er dette nødvendigt?
-			// Modtag:	DW A // Er dette nødvendigt?
-			// Gentag step 6.
+			
 	
 		} catch (Exception e) {
 			System.out.println("Error: " + e.getMessage());
@@ -121,6 +48,7 @@ public class Controller {
 		
 	}
 	
+
 	private void step1() throws Exception {
 		
 		// Step 1. Identificer operatør.
@@ -155,7 +83,7 @@ public class Controller {
 		// Gentag step 1.
 		
 	}
-	private void step2() {
+	private void step2() throws Exception{
 	
 		// Step 2. Identificer vare.
 		// -------------------------
@@ -165,7 +93,110 @@ public class Controller {
 		// Valider input og retuner til step 1 eller forsæt til step 3.
 		
 	}
+	private void step2error() {
+		// // Step 2. Fejlet.
+					// Send:	D "Ukendt vare."
+					// Modtag:	D A
+					// Vent 2 sekunder.
+					// Send:	DW // Er dette nødvendigt?
+					// Modtag:	DW A // Er dette nødvendigt?
+					// Gentag step 2.
+					// 	
+		
+	}
+	private void step3()throws Exception {
+		// // Step 3. Bekræft vare.
+					// Send:	RM20 4 "Korrekt vare?" "#" "1/0" // # er vare navnet.
+					// Modtag:	RM20 B
+					// Modtag:	RM20 A "#" // # er den indtastede værdi.
+					// Valider input og retuner til step 2 eller fortsæt til step 4.
+		
+	}
+	private void step3error() {
+		// // Step 3. Fejlet.
+					// Send:	D "Ugyldigt input."
+					// Modtag:	D A
+					// Vent 2 sekunder.
+					// Send:	DW // Er dette nødvendigt?
+					// Modtag:	DW A // Er dette nødvendigt?
+					// Gentag step 3.
+					// 	
+		
+	}
+	private void step4() throws Exception{
+		// // Step 4. Tarer vægt.
+		// Send:	RM20 4 "Placer skål på vægten." "" "1/0"
+		// Modtag:	RM20 B
+		// Modtag:	RM20 A "#" // # er den indtastede værdi.
+		// Valider input og retuner til step 3 eller fortsæt.
+		// Send:	T
+		// Modtag:	T S # kg // # er den nye tara, punktum bruges som decimaltegn.
+	}
+	private void step4error() {
+		// // Step 4. Fejlet.
+					// Send:	D "Ugyldigt input."
+					// Modtag:	D A
+					// Vent 2 sekunder.
+					// Send:	DW // Er dette nødvendigt?
+					// Modtag:	DW A // Er dette nødvendigt?
+					// Gentag step 4.
+					// 
 	
+}
+	private void step5() throws Exception{
+		// // Step 5. Afvej vare.
+		// Send:	RM20 4 "Placer vare i skålen." "" "1/0"
+		// Modtag:	RM20 B
+		// Modtag:	RM20 A "#" // # er den indtastede værdi.
+		// Valider input og retuner til step 4 eller fortsæt.
+		// Send:	S
+		// Modtag:	S S # kg // # er netto vægten, punktum bruges som decimaltegn.
+}
+	private void step5error() {
+		// // Step 5. Fejlet.
+					// Send:	D "Ugyldigt input."
+					// Modtag:	D A
+					// Vent 2 sekunder.
+					// Send:	DW // Er dette nødvendigt?
+					// Modtag:	DW A // Er dette nødvendigt?
+					// Gentag step 5.
+					// 
+	
+}
+	private void step6() throws Exception{
+		// // Step 6. Kontroller brutto vægt.
+					// Send:	RM20 4 "Ryd vægten." "" "1/0"
+					// Modtag:	RM20 B
+					// Modtag:	RM20 A "#" // # er den indtastede værdi.
+					// Valider input og retuner til step 5 eller fortsæt.
+					// Send:	T
+					// Modtag:	T S # kg // # er den nye tara, punktum bruges som decimaltegn.
+					// Kontroller brutto vægt.
+					// Send:	D "Brutto kontrol ok."
+					// Modtag:	D A
+					// Vent 2 sekunder.
+					// Send:	DW // Er dette nødvendigt?
+					// Modtag:	DW A // Er dette nødvendigt?
+					// Opdater lagerbeholdningen, skriv til loggen og retuner til step 1.
+}
+	private void step6error() {
+		// // Step 6. Fejlet (1).
+					// Send:	D "Ugyldigt input."
+					// Modtag:	D A
+					// Vent 2 sekunder.
+					// Send:	DW // Er dette nødvendigt?
+					// Modtag:	DW A // Er dette nødvendigt?
+					// Gentag step 6.
+					// // Step 6. Fejlet (2).
+					// Send:	D "Brutto kontrol fejlet."
+					// Modtag:	D A
+					// Vent 2 sekunder.
+					// Send:	DW // Er dette nødvendigt?
+					// Modtag:	DW A // Er dette nødvendigt?
+					// Gentag step 6.
+	
+}
+
 	private String RM20(String line) {
 
 		final Pattern pattern = Pattern.compile("^RM20 A \"([^\"]*)\"$");
