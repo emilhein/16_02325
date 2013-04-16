@@ -13,7 +13,7 @@ public class main {
 	// Send:	DW // Er dette nødvendigt?
 	// Modtag:	DW A // Er dette nødvendigt?
 	// Gentag step 1.
-	// 
+	 
 	// // Step 2. Identificer vare.
 	// Send:	RM20 4 "Vare nummer:" "" ""
 	// Modtag:	RM20 B
@@ -26,7 +26,7 @@ public class main {
 	// Send:	DW // Er dette nødvendigt?
 	// Modtag:	DW A // Er dette nødvendigt?
 	// Gentag step 2.
-	// 
+	
 	// // Step 3. Bekræft vare.
 	// Send:	RM20 4 "Korrekt vare?" "#" "1/0" // # er vare navnet.
 	// Modtag:	RM20 B
@@ -39,7 +39,7 @@ public class main {
 	// Send:	DW // Er dette nødvendigt?
 	// Modtag:	DW A // Er dette nødvendigt?
 	// Gentag step 3.
-	// 
+	
 	// // Step 4. Tarer vægt.
 	// Send:	RM20 4 "Placer skål på vægten." "" "1/0"
 	// Modtag:	RM20 B
