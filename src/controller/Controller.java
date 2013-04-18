@@ -15,7 +15,7 @@ public class Controller {
 		
 		try {
 			
-			socket = new Socket("localhost", 8080);
+			socket = new Socket("localhost", 4567);
 			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			writer = new DataOutputStream(socket.getOutputStream());
 			
@@ -91,7 +91,16 @@ public class Controller {
 		// Modtag:	RM20 B
 		// Modtag:	RM20 A "#" // # er den indtastede værdi.
 		// Valider input og retuner til step 1 eller forsæt til step 3.
-		
+		writer.writeBytes("RM20 4 \"Vare nummer:\" \"\" \"\"");
+		if (reader.readLine().equals("RM20 B")) {
+			String response = RM20(reader.readLine());
+			if (response == null) { /// her skal lavevs en aktion! læs fra store.fil
+				step2error();
+			}
+		} else
+			step2error();
+		return;
+
 	}
 	private void step2error() {
 		// // Step 2. Fejlet.
@@ -164,7 +173,7 @@ public class Controller {
 	
 }
 	private void step6() throws Exception{
-		// // Step 6. Kontroller brutto vægt.
+		// /	/ Step 6. Kontroller brutto vægt.
 					// Send:	RM20 4 "Ryd vægten." "" "1/0"
 					// Modtag:	RM20 B
 					// Modtag:	RM20 A "#" // # er den indtastede værdi.
