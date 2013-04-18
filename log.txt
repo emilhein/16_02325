@@ -1,7 +1,0 @@
-1,abe
-2,hund
-3,kat
-4,ko
-5,gris
-6,amfetamin
-7,rækkehus
