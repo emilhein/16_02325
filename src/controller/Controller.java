@@ -186,23 +186,32 @@ public class Controller {
 
 	}
 
-	private void step6() throws Exception {
-		// / / Step 6. Kontroller brutto vægt.
-		// Send: RM20 4 "Ryd vægten." "" "1/0"
-		// Modtag: RM20 B
-		// Modtag: RM20 A "#" // # er den indtastede værdi.
-		// Valider input og retuner til step 5 eller fortsæt.
-		// Send: T
-		// Modtag: T S # kg // # er den nye tara, punktum bruges som
-		// decimaltegn.
-		// Kontroller brutto vægt.
-		// Send: D "Brutto kontrol ok."
-		// Modtag: D A
-		// Vent 2 sekunder.
-		// Send: DW // Er dette nødvendigt?
-		// Modtag: DW A // Er dette nødvendigt?
-		// Opdater lagerbeholdningen, skriv til loggen og retuner til step 1.
-	}
+	
+	private void step6() throws Exception{
+		// /	/ Step 6. Kontroller brutto vægt.
+					// Send:	RM20 4 "Ryd vægten." "" "1/0"
+					// Modtag:	RM20 B
+					// Modtag:	RM20 A "#" // # er den indtastede værdi.
+					// Valider input og retuner til step 5 eller fortsæt.
+					// Send:	T
+					// Modtag:	T S # kg // # er den nye tara, punktum bruges som decimaltegn.
+					// Kontroller brutto vægt.
+					// Send:	D "Brutto kontrol ok."
+					// Modtag:	D A
+					// Vent 2 sekunder.
+					// Send:	DW // Er dette nødvendigt?
+					// Modtag:	DW A // Er dette nødvendigt?
+					// Opdater lagerbeholdningen, skriv til loggen og retuner til step 1.
+		writer.writeBytes("RM20 4 \"Ryd vægten:\" \"\" \"\"");
+		if (reader.readLine().equals("RM20 B")) {
+			String response = RM20(reader.readLine());
+			if (response == null) {
+				step6error();
+			}
+		} else
+			step6error();
+		return;
+}
 
 	private void step6error() {
 		// // Step 6. Fejlet (1).
