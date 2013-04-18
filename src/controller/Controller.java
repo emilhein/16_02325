@@ -187,6 +187,15 @@ public class Controller {
 					// Send:	DW // Er dette nødvendigt?
 					// Modtag:	DW A // Er dette nødvendigt?
 					// Opdater lagerbeholdningen, skriv til loggen og retuner til step 1.
+		writer.writeBytes("RM20 4 \"Ryd vægten:\" \"\" \"\"");
+		if (reader.readLine().equals("RM20 B")) {
+			String response = RM20(reader.readLine());
+			if (response == null) {
+				step6error();
+			}
+		} else
+			step6error();
+		return;
 }
 	private void step6error() {
 		// // Step 6. Fejlet (1).
