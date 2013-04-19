@@ -281,7 +281,7 @@ public class Controller {
 
 			// Modtag: RM20 B
 			if (!reader.readLine().equals("RM20 B")) {
-				step1error();
+				step5error();
 				return;
 			}
 
