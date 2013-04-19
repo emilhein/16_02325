@@ -111,8 +111,11 @@ public class Controller {
 			step2error();
 		}
 		int item = Integer.parseInt(response);
-		getProductName(item);
-		step3();	
+		String exists = getProductName(item);
+		if(exists == null){
+			step2error();
+		}
+		step3(exists);	
 		}
 			
 
@@ -153,14 +156,14 @@ public class Controller {
 		// hvor skal jeg vide hvad vare navnet er ??
 		writer.writeBytes("RM20 4 \"Korrekt vare?\" \""  + productname + "\" \"1/0\"");
 		if (!reader.readLine().equals("RM20 B")) {	
-			step3error();
+			step3error(productname);
 			return;
 		}
 
 		
 		String response = RM20(reader.readLine());
 		if (response == null) {
-			step3error();
+			step3error(productname);
 			return;
 		}
 		if (!response.equals("1")) {
@@ -170,7 +173,7 @@ public class Controller {
 		step4();
 		
 	}
-	private void step3error() throws Exception {
+	private void step3error(String Productname) throws Exception {
 		// // Step 3. Fejlet.
 		// Send:	D "Ugyldigt input."
 		// Modtag:	D A
@@ -182,18 +185,18 @@ public class Controller {
 		System.out.println("Ugyldigt input i step3");
 		writer.writeBytes("D \"ugyldigt input.\"");
 		if (!reader.readLine().equals("D A")) {	
-			step3error();
+			step3error(Productname);
 			return;
 		}
 		
 		System.out.println("vent to sekunder!!");
 		writer.writeBytes("DW");
 		if (!reader.readLine().equals("DW A")) {	
-			step3error();
+			step3error(Productname);
 			return;
 		}
 		
-		step3();
+		step3(Productname);
 	}
 	
 
