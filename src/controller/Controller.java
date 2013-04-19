@@ -11,6 +11,8 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.xml.ws.Response;
+
 public class Controller {
 
 	Socket socket = null;
@@ -202,9 +204,45 @@ public class Controller {
 		// Send: T
 		// Modtag: T S # kg // # er den nye tara, punktum bruges som
 		// decimaltegn.
+		String response = "";
+		step4loop: while(true){
+			// Send: RM20 4 "Placer skål på vægten." "" "1/0"
+			writer.writeBytes("RM20 4 \"Placer skål på vægten.\" \"\" \"1/0\"");
+
+			// Modtag: RM20 B
+			if (!reader.readLine().equals("RM20 B")) {
+				step4error();
+				return;
+			}
+
+			// Modtag: RM20 A "#" // # er den indtastede værdi.
+			response = RM20(reader.readLine());
+			if (response == null) {
+				step4error();
+				return;
+			}
+
+			// Valider input og retuner til step 3 eller fortsæt.
+			if(response.equals("0") || response.equals("1"))
+			{
+				break step4loop;
+			}
+			step4error();
+
+		}
+		
+		if(response.equals("0"))
+			step4();
+		
+		// Send: S
+		writer.writeBytes("T");
+
+		// Modtag: T T # kg // # er den nye tara vægten, punktum bruges som decimaltegn.
+		String Tara = T(reader.readLine());
+		
 	}
 
-	private void step4error() {
+	private void step4error() throws Exception {
 		// // Step 4. Fejlet.
 		// Send: D "Ugyldigt input."
 		// Modtag: D A
@@ -213,6 +251,24 @@ public class Controller {
 		// Modtag: DW A // Er dette nødvendigt?
 		// Gentag step 4.
 		//
+		writer.writeBytes("D \"ugyldigt input.\"");
+
+		if (!reader.readLine().equals("D A")) {
+			step1error();
+			return;
+		}
+
+	}
+
+	private String T(String line) {
+
+		final Pattern pattern = Pattern.compile("^S S ([0-9]*\\.?[0-9]+) kg$");
+
+		Matcher matcher = pattern.matcher(line);
+		if (!matcher.matches()) {
+			return null;
+		}
+		return matcher.group(1);
 
 	}
 
