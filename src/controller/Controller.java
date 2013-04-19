@@ -195,7 +195,7 @@ public class Controller {
 		
 	}
 	
-	private void step4() throws Exception {
+	private void step4(String Productname) throws Exception {
 		// // Step 4. Tarer vægt.
 		// Send: RM20 4 "Placer skål på vægten." "" "1/0"
 		// Modtag: RM20 B
@@ -232,7 +232,7 @@ public class Controller {
 		}
 		
 		if(response.equals("0"))
-			step4();
+			step3(Productname);
 		
 		// Send: S
 		writer.writeBytes("T");
