@@ -131,8 +131,7 @@ public class Controller {
 			step2error();
 			return;
 		}
-		
-		System.out.println("vent to sekunder!!");
+		Thread.sleep(2000);
 		writer.writeBytes("DW");
 		if (!reader.readLine().equals("DW A")) {	
 			step2error();
