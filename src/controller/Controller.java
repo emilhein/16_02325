@@ -98,14 +98,9 @@ public class Controller {
 			step2error();
 		}
 		int item = Integer.parseInt(response);
-		getProductName(item);
-		step3();	
+		step3(getProductName(item));	
 		}
 			
-		
-			
-		
-	
 
 	private void step2error() throws Exception {
 		// // Step 2. Fejlet.
