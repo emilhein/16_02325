@@ -19,6 +19,12 @@ public class Controller {
 	BufferedReader reader = null;
 	DataOutputStream writer = null;
 
+	int operatorNumber = 0;
+	String operatorName = null;
+	int productNumber = 0;
+	String productName = null;
+	double tara = 0;
+
 	public Controller() {
 
 		try {
@@ -52,7 +58,7 @@ public class Controller {
 
 		// Step 1. Identificer operatør.
 		// -----------------------------
-		// Send: RM20 4 "Operatør nummer:" "" ""
+		// Send: RM20 4 "Operatør nummer:" " " " "
 		// Modtag: RM20 B
 		// Modtag: RM20 A "#" // # er den indtastede værdi.
 		// Valider input og fortsæt til step 2.
@@ -94,6 +100,10 @@ public class Controller {
 
 		// Step 2. Identificer vare.
 		// -------------------------
+		// Send: RM20 4 "Vare nummer:" " " " "
+		// Modtag: RM20 B
+		// Modtag: RM20 A # // # er den indtastede værdi.
+		// Valider input og retuner til step 1 eller forsæt til step 3.
 		
 		writer.writeBytes("RM20 4 \"Vare nummer:\" \" \" \" \"\r\n"); // Send: RM20 4 "Vare nummer:" "" ""
 		reader.readLine().equals("RM20 B"); 	// Modtag: RM20 B
@@ -195,80 +205,55 @@ public class Controller {
 		
 	}
 	
-	private void step4(String Productname) throws Exception {
-		// // Step 4. Tarer vægt.
-		// Send: RM20 4 "Placer skål på vægten." "" "1/0"
+	private void step4() throws Exception {
+		
+		// Step 4. Tarer vægt.
+		// -------------------
+		// Send: RM20 4 "Placer skål på vægten." " " "1/0"
 		// Modtag: RM20 B
-		// Modtag: RM20 A "#" // # er den indtastede værdi.
+		// Modtag: RM20 A # // # er den indtastede værdi.
 		// Valider input og retuner til step 3 eller fortsæt.
 		// Send: T
-		// Modtag: T S # kg // # er den nye tara, punktum bruges som
-		// decimaltegn.
-		String response = "";
-		step4loop: while(true){
-			// Send: RM20 4 "Placer skål på vægten." "" "1/0"
-			writer.writeBytes("RM20 4 \"Placer skål på vægten.\" \"\" \"1/0\"\r\n");
-
-			// Modtag: RM20 B
-			if (!reader.readLine().equals("RM20 B")) {
-				step4error();
-				return;
-			}
-
-			// Modtag: RM20 A "#" // # er den indtastede værdi.
-			response = RM20(reader.readLine());
-			if (response == null) {
-				step4error();
-				return;
-			}
-
-			// Valider input og retuner til step 3 eller fortsæt.
-			if(response.equals("0") || response.equals("1"))
-			{
-				break step4loop;
-			}
+		// Modtag: T S # kg // # er den nye tara, punktum bruges som decimaltegn.
+		
+		writer.writeBytes("RM20 4 \"Placer skål på vægten.\" \" \" \"1/0\"\r\n");
+		if (!reader.readLine().equals("RM20 B")) {
 			step4error();
-
+			return;
 		}
-		
-		if(response.equals("0"))
-			step3(Productname);
-		
-		// Send: S
+		String response = RM20(reader.readLine());
+		if (response == null) {
+			step4error();
+			return;
+		}
+		if (response.equals("0")) {
+			step3();
+			return;
+		} else if (!response.equals("1")) {
+			step4error();
+			return;
+		}
 		writer.writeBytes("T");
-
-		// Modtag: T T # kg // # er den nye tara vægten, punktum bruges som decimaltegn.
-		String Tara = T(reader.readLine());
+		tara = Double.parseDouble(T(reader.readLine()));
+		step5();
 		
 	}
 
 	private void step4error() throws Exception {
-		// // Step 4. Fejlet.
-		// Send: D "Ugyldigt input."
+		
+		// Step 4. Fejlet.
+		// ---------------
+		// Send: D Ugyldigt input.
 		// Modtag: D A
 		// Vent 2 sekunder.
-		// Send: DW // Er dette nødvendigt?
-		// Modtag: DW A // Er dette nødvendigt?
 		// Gentag step 4.
-		//
-		writer.writeBytes("D \"ugyldigt input.\"\r\n");
-
+		
+		writer.writeBytes("D Ugyldigt input.\r\n");
 		if (!reader.readLine().equals("D A")) {
-			step1error();
+			step4error();
 			return;
 		}
-
-	}
-
-	private String T(String line) {
-
-		final Pattern pattern = Pattern.compile("^S S ([0-9]*\\.?[0-9]+) kg$");
-
-		Matcher matcher = pattern.matcher(line);
-		if (!matcher.matches()) {
-			return null;
-		}
-		return matcher.group(1);
+		step4();
 
 	}
 
@@ -324,19 +309,6 @@ public class Controller {
 		}
 
 	}
-
-	private String S(String line) {
-
-		final Pattern pattern = Pattern.compile("^S S ([0-9]*\\.?[0-9]+) kg$");
-
-		Matcher matcher = pattern.matcher(line);
-		if (!matcher.matches()) {
-			return null;
-		}
-		return matcher.group(1);
-
-	}
-
 	
 	private void step6() throws Exception{
 		// /	/ Step 6. Kontroller brutto vægt.
@@ -394,6 +366,7 @@ public class Controller {
 		// Gentag step 6.
 
 	}
+
 
 	public static String getOperatorName(int number) {
 
@@ -462,6 +435,28 @@ public class Controller {
 	private String RM20(String line) {
 
 		final Pattern pattern = Pattern.compile("^RM20 A ([^\"]*)$");
+
+		Matcher matcher = pattern.matcher(line);
+		if (!matcher.matches()) {
+			return null;
+		}
+		return matcher.group(1);
+
+	}
+	private String T(String line) {
+
+		final Pattern pattern = Pattern.compile("^T S ([0-9]*\\.?[0-9]+) kg$");
+
+		Matcher matcher = pattern.matcher(line);
+		if (!matcher.matches()) {
+			return null;
+		}
+		return matcher.group(1);
+
+	}
+	private String S(String line) {
+
+		final Pattern pattern = Pattern.compile("^S S ([0-9]*\\.?[0-9]+) kg$");
 
 		Matcher matcher = pattern.matcher(line);
 		if (!matcher.matches()) {
