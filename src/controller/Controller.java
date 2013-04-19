@@ -21,6 +21,8 @@ public class Controller {
 	
 	int operatorNumber = 0;
 	String operatorName = null;
+	int productNumber = 0;
+	String productName = null;
 
 	public Controller() {
 
@@ -103,11 +105,14 @@ public class Controller {
 
 		// Step 2. Identificer vare.
 		// -------------------------
-		
-		writer.writeBytes("RM20 4 \"Vare nummer:\" \" \" \" \"\r\n"); // Send: RM20 4 "Vare nummer:" "" ""
-		reader.readLine().equals("RM20 B"); 	// Modtag: RM20 B
-		String response = RM20(reader.readLine()); // Modtag: RM20 A "#" // # er den indtastede værdi.
+		// Send: RM20 4 "Vare nummer:" "" ""
+		// Modtag: RM20 B
+		// Modtag: RM20 A "#" // # er den indtastede værdi.
 		// Valider input og retuner til step 1 eller forsæt til step 3.
+		
+		writer.writeBytes("RM20 4 \"Vare nummer:\" \" \" \" \"\r\n");
+		reader.readLine().equals("RM20 B");
+		String response = RM20(reader.readLine());
 		
 		if (response == null || !response.matches("^[0-9]+$")){
 			step2error();
@@ -116,36 +121,31 @@ public class Controller {
 			step1();
 			return;
 		}
-		String exists = getProductName(Integer.parseInt(response));
-		if(exists == null){
+		productNumber = Integer.parseInt(response);
+		productName = getProductName(productNumber);
+		if(productName == null){
 			step2error();
 			return;
 		}
-		step3(exists);
+		step3();
 		
 	}		
 
 	private void step2error() throws Exception {
-		// // Step 2. Fejlet.
+		
+		// Step 2. Fejlet.
+		// ---------------
 		// Send: D "Ukendt vare."
 		// Modtag: D A
 		// Vent 2 sekunder.
-		// Send: DW // Er dette nødvendigt?
-		// Modtag: DW A // Er dette nødvendigt?
 		// Gentag step 2.
-		//
 
-		writer.writeBytes("D \"Ukendt vare.\" \r\n");
+		writer.writeBytes("D Ukendt vare.\r\n");
 		if (!reader.readLine().equals("D A")) {	
 			step2error();
 			return;
 		}
 		Thread.sleep(2000);
-		writer.writeBytes("DW\r\n");
-		if (!reader.readLine().equals("DW A")) {	
-			step2error();
-			return;
-		}
 		step2();
 
 	}
