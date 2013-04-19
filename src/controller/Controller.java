@@ -97,7 +97,7 @@ public class Controller {
 		}
 		int item = Integer.parseInt(response);
 		getProductName(item);
-			
+		step3();	
 		}
 			
 		
