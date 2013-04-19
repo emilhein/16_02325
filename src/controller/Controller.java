@@ -85,13 +85,15 @@ public class Controller {
 
 		// Step 2. Identificer vare.
 		// -------------------------
-		// Send: RM20 4 "Vare nummer:" "" ""
-		// Modtag: RM20 B
-		// Modtag: RM20 A "#" // # er den indtastede værdi.
+		
+	
+		
+		
+		writer.writeBytes("RM20 4 \"Vare nummer:\" \"\" \"\""); // Send: RM20 4 "Vare nummer:" "" ""
+		reader.readLine().equals("RM20 B"); 	// Modtag: RM20 B
+		String response = RM20(reader.readLine()); // Modtag: RM20 A "#" // # er den indtastede værdi.
 		// Valider input og retuner til step 1 eller forsæt til step 3.
-		writer.writeBytes("RM20 4 \"Vare nummer:\" \"\" \"\"");
-		reader.readLine().equals("RM20 B"); 
-		String response = RM20(reader.readLine());
+		
 		if (response == null){
 			step2error();
 		}
