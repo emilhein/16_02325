@@ -212,18 +212,38 @@ public class Controller {
 	private void step5() throws Exception {
 		// // Step 5. Afvej vare.
 		// Send: RM20 4 "Placer vare i skålen." "" "1/0"
+		writer.writeBytes("RM20 4 \"Placer vare i skålen.\" \"\" \"1/0\"");
+		
 		// Modtag: RM20 B
+		if (!reader.readLine().equals("RM20 B")) {
+			step1error();
+			return;
+		}
+		
 		// Modtag: RM20 A "#" // # er den indtastede værdi.
+		String response = RM20(reader.readLine());
+		if (response == null) {
+			step5error();
+			return;
+		}
+		
 		// Valider input og retuner til step 4 eller fortsæt.
+		
+		
 		// Send: S
-		// Modtag: S S # kg // # er netto vægten, punktum bruges som
-		// decimaltegn.
+		writer.writeBytes("S");
+		
+		// Modtag: S S # kg // # er netto vægten, punktum bruges som decimaltegn.
+		
 	}
 
-	private void step5error() {
+	private void step5error() throws Exception{
 		// // Step 5. Fejlet.
 		// Send: D "Ugyldigt input."
+		writer.writeBytes("D \"ugyldigt input.\"");
+		
 		// Modtag: D A
+		
 		// Vent 2 sekunder.
 		// Send: DW // Er dette nødvendigt?
 		// Modtag: DW A // Er dette nødvendigt?
