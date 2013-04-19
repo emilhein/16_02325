@@ -103,7 +103,6 @@ public class Controller {
 		}
 		int item = Integer.parseInt(response);
 		readstore(item);
-		
 			
 		}
 			
