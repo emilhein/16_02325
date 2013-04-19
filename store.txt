@@ -1,6 +1,7 @@
 1,Badesalt
 2,hund
 3,kat
+13,halm
 4,ko
 5,gris
 6,amfetamin
