@@ -111,7 +111,7 @@ public class Controller {
 		
 	
 
-	private void step2error() {
+	private void step2error() throws Exception {
 		// // Step 2. Fejlet.
 		// Send: D "Ukendt vare."
 		// Modtag: D A
@@ -120,29 +120,77 @@ public class Controller {
 		// Modtag: DW A // Er dette nødvendigt?
 		// Gentag step 2.
 		//
+		System.out.println("Ugyldigt input i step2");
+		writer.writeBytes("D \"ugyldigt input.\"");
+		if (!reader.readLine().equals("D A")) {	
+			step2error();
+			return;
+		}
+		
+		System.out.println("vent to sekunder!!");
+		writer.writeBytes("DW");
+		if (!reader.readLine().equals("DW A")) {	
+			step2error();
+			return;
+		}
+		
+		step2();
+		}
 
-	}
+
 
 	private void step3() throws Exception {
 		// // Step 3. Bekræft vare.
-		// Send: RM20 4 "Korrekt vare?" "#" "1/0" // # er vare navnet.
-		// Modtag: RM20 B
-		// Modtag: RM20 A "#" // # er den indtastede værdi.
+		// Send:	RM20 4 "Korrekt vare?" "#" "1/0" // # er vare navnet.
+		// Modtag:	RM20 B
+		// Modtag:	RM20 A "#" // # er den indtastede værdi.
 		// Valider input og retuner til step 2 eller fortsæt til step 4.
-
+		
+		// hvor skal jeg vide hvad vare navnet er ??
+		writer.writeBytes("RM20 4 \"Korrekt vare?\" \"#\" \"1/0\"");
+		if (!reader.readLine().equals("RM20 B")) {	
+			step3error();
+			return;
+		}
+		String response = RM20(reader.readLine());
+		if (response == null) {
+			step3error();
+			return;
+		}
+		if (!response.equals("1")) {
+			step2();
+			return;
+		}
+		step4();
+		
 	}
-
-	private void step3error() {
+	private void step3error() throws Exception {
 		// // Step 3. Fejlet.
-		// Send: D "Ugyldigt input."
-		// Modtag: D A
+		// Send:	D "Ugyldigt input."
+		// Modtag:	D A
 		// Vent 2 sekunder.
-		// Send: DW // Er dette nødvendigt?
-		// Modtag: DW A // Er dette nødvendigt?
+		// Send:	DW // Er dette nødvendigt?
+		// Modtag:	DW A // Er dette nødvendigt?
 		// Gentag step 3.
-		//
-
+		// 	
+		System.out.println("Ugyldigt input i step3");
+		writer.writeBytes("D \"ugyldigt input.\"");
+		if (!reader.readLine().equals("D A")) {	
+			step3error();
+			return;
+		}
+		
+		System.out.println("vent to sekunder!!");
+		writer.writeBytes("DW");
+		if (!reader.readLine().equals("DW A")) {	
+			step3error();
+			return;
+		}
+		
+		step3();
 	}
+	
+
 
 	private void step4() throws Exception {
 		// // Step 4. Tarer vægt.
