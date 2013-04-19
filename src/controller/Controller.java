@@ -2,13 +2,13 @@ package controller;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.io.LineNumberReader;
 
 public class Controller {
 
@@ -21,16 +21,10 @@ public class Controller {
 		try {
 
 			socket = new Socket("localhost", 4567);
-			reader = new BufferedReader(new InputStreamReader(
-					socket.getInputStream()));
+			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			writer = new DataOutputStream(socket.getOutputStream());
 
 			step1();
-			step2();
-			step3();
-			step4();
-			step5();
-			step6();
 
 		} catch (Exception e) {
 			System.out.println("Error: " + e.getMessage());
@@ -102,7 +96,7 @@ public class Controller {
 			step2error();
 		}
 		int item = Integer.parseInt(response);
-		readstore(item);
+		getProductName(item);
 			
 		}
 			
@@ -283,29 +277,36 @@ public class Controller {
 
 	}
 
-	public static void readstore(int a) {
-		LineNumberReader br = null;
+	public static String getProductName(int number) {
+
+		final Pattern pattern = Pattern.compile("^([0-9]+),([^,]+)$");
+
+		Scanner scanner = null;
+		
 		try {
-
-			br = new LineNumberReader(new FileReader("store.txt"));
-			for (String line = null; (line = br.readLine()) != null;) {
-				if (br.getLineNumber() == a) {
-					System.out.println(br.readLine());
+			scanner = new Scanner(new FileReader("store.txt"));
+			String line;
+			while (scanner.hasNextLine()) {
+				line = scanner.nextLine();
+				Matcher matcher = pattern.matcher(line);
+				if (!matcher.matches()) {
+					System.err.println("Fejl i Store.txt, linjen er ugyldig: " + line);
+					return null;
 				}
-
+				if (Integer.parseInt(matcher.group(1)) == number) {
+					return matcher.group(2);
+				}
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
+			return null;
+		} catch (FileNotFoundException e) {
+			System.err.println("Filen blev ikke fundet: Store.txt");
+			return null;
 		} finally {
-			try {
-				if (br != null)
-					br.close();
-			} catch (IOException ex) {
-				ex.printStackTrace();
+			if (scanner != null) {
+				scanner.close();
 			}
 		}
 		
-
 	}
 	    
 	
