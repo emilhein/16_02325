@@ -277,6 +277,37 @@ public class Controller {
 
 	}
 
+	public static String getOperatorName(int number) {
+
+		final Pattern pattern = Pattern.compile("^([0-9]+),([^,]+)$");
+
+		Scanner scanner = null;
+		
+		try {
+			scanner = new Scanner(new FileReader("operators.txt"));
+			String line;
+			while (scanner.hasNextLine()) {
+				line = scanner.nextLine();
+				Matcher matcher = pattern.matcher(line);
+				if (!matcher.matches()) {
+					System.err.println("Fejl i Operators.txt, linjen er ugyldig: " + line);
+					return null;
+				}
+				if (Integer.parseInt(matcher.group(1)) == number) {
+					return matcher.group(2);
+				}
+			}
+			return null;
+		} catch (FileNotFoundException e) {
+			System.err.println("Filen blev ikke fundet: Operators.txt");
+			return null;
+		} finally {
+			if (scanner != null) {
+				scanner.close();
+			}
+		}
+		
+	}
 	public static String getProductName(int number) {
 
 		final Pattern pattern = Pattern.compile("^([0-9]+),([^,]+)$");
