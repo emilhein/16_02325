@@ -59,7 +59,7 @@ public class Controller {
 		// -----------------------------
 		// Send: RM20 4 "Operatør nummer:" "" ""
 		// Modtag: RM20 B
-		// Modtag: RM20 A "#" // # er den indtastede værdi.
+		// Modtag: RM20 A # // # er den indtastede værdi.
 		// Valider input og fortsæt til step 2.
 
 		writer.writeBytes("RM20 4 \"Operatør nummer:\" \" \" \" \"\r\n");
@@ -107,7 +107,7 @@ public class Controller {
 		// -------------------------
 		// Send: RM20 4 "Vare nummer:" "" ""
 		// Modtag: RM20 B
-		// Modtag: RM20 A "#" // # er den indtastede værdi.
+		// Modtag: RM20 A # // # er den indtastede værdi.
 		// Valider input og retuner til step 1 eller forsæt til step 3.
 		
 		writer.writeBytes("RM20 4 \"Vare nummer:\" \" \" \" \"\r\n");
@@ -135,7 +135,7 @@ public class Controller {
 		
 		// Step 2. Fejlet.
 		// ---------------
-		// Send: D "Ukendt vare."
+		// Send: D Ukendt vare.
 		// Modtag: D A
 		// Vent 2 sekunder.
 		// Gentag step 2.
@@ -150,21 +150,23 @@ public class Controller {
 
 	}
 
-	private void step3(String productname) throws Exception {
-		// // Step 3. Bekræft vare.
+	private void step3() throws Exception {
+		
+		// Step 3. Bekræft vare.
+		// ---------------------
 		// Send:	RM20 4 "Korrekt vare?" "#" "1/0" // # er vare navnet.
 		// Modtag:	RM20 B
-		// Modtag:	RM20 A "#" // # er den indtastede værdi.
+		// Modtag:	RM20 A # // # er den indtastede værdi.
 		// Valider input og retuner til step 2 eller fortsæt til step 4.
 		
-		writer.writeBytes("RM20 4 \"Korrekt vare?\" \""  + productname + "\" \"1/0\"\r\n");
+		writer.writeBytes("RM20 4 \"Korrekt vare?\" \""  + productName + "\" \"1/0\"\r\n");
 		if (!reader.readLine().equals("RM20 B")) {	
-			step3error(productname);
+			step3error();
 			return;
 		}
 		String response = RM20(reader.readLine());
 		if (response == null) {
-			step3error(productname);
+			step3error();
 			return;
 		}
 		if (response.equals("0")) {
@@ -174,33 +176,28 @@ public class Controller {
 			step4();
 			return;
 		} else {
-			step3error(productname);
+			step3error();
 			return;
 		}
 		
 	}
-	private void step3error(String Productname) throws Exception {
-		// // Step 3. Fejlet.
-		// Send:	D "Ugyldigt input."
+
+	private void step3error() throws Exception {
+		
+		// Step 3. Fejlet.
+		// ---------------
+		// Send:	D Ugyldigt input.
 		// Modtag:	D A
 		// Vent 2 sekunder.
-		// Send:	DW // Er dette nødvendigt?
-		// Modtag:	DW A // Er dette nødvendigt?
 		// Gentag step 3.
-		// 	
 
-		writer.writeBytes("D \"Ugyldigt input.\"\r\n");
+		writer.writeBytes("D Ugyldigt input.\r\n");
 		if (!reader.readLine().equals("D A")) {	
-			step3error(Productname);
+			step3error();
 			return;
 		}
 		Thread.sleep(2000);
-		writer.writeBytes("DW\r\n");
-		if (!reader.readLine().equals("DW A")) {	
-			step3error(Productname);
-			return;
-		}
-		step3(Productname);
+		step3();
 		
 	}
 	
