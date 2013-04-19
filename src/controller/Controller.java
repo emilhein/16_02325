@@ -135,7 +135,7 @@ public class Controller {
 
 
 
-	private void step3() throws Exception {
+	private void step3(String productname) throws Exception {
 		// // Step 3. Bekræft vare.
 		// Send:	RM20 4 "Korrekt vare?" "#" "1/0" // # er vare navnet.
 		// Modtag:	RM20 B
@@ -143,11 +143,13 @@ public class Controller {
 		// Valider input og retuner til step 2 eller fortsæt til step 4.
 		
 		// hvor skal jeg vide hvad vare navnet er ??
-		writer.writeBytes("RM20 4 \"Korrekt vare?\" \"#\" \"1/0\"");
+		writer.writeBytes("RM20 4 \"Korrekt vare?\" \""  + productname + "\" \"1/0\"");
 		if (!reader.readLine().equals("RM20 B")) {	
 			step3error();
 			return;
 		}
+
+		
 		String response = RM20(reader.readLine());
 		if (response == null) {
 			step3error();
