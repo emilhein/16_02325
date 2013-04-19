@@ -18,6 +18,9 @@ public class Controller {
 	Socket socket = null;
 	BufferedReader reader = null;
 	DataOutputStream writer = null;
+	
+	int operatorNumber = 0;
+	String operatorName = null;
 
 	public Controller() {
 
@@ -63,7 +66,13 @@ public class Controller {
 			return;
 		}
 		String response = RM20(reader.readLine());
-		if (response == null || !response.matches("^[0-9]+$") || getOperatorName(Integer.parseInt(response)) == null) {
+		if (response == null || !response.matches("^[0-9]+$")) {
+			step1error();
+			return;
+		}
+		operatorNumber = Integer.parseInt(response);
+		operatorName = getOperatorName(operatorNumber);
+		if (operatorName == null) {
 			step1error();
 			return;
 		}
