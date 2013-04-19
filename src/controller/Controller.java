@@ -55,7 +55,7 @@ public class Controller {
 		// Modtag: RM20 A "#" // # er den indtastede værdi.
 		// Valider input og fortsæt til step 2.
 
-		writer.writeBytes("RM20 4 \"Operatør nummer:\" \"\" \"\"");
+		writer.writeBytes("RM20 4 \"Operatør nummer:\" \" \" \" \"\r\n");
 		if (!reader.readLine().equals("RM20 B")) {
 			step1error();
 			return;
@@ -73,24 +73,17 @@ public class Controller {
 
 		// Step 1. Fejlet.
 		// ---------------
-		// Send: D "Ukendt operatør."
+		// Send: D Ukendt operatør.
 		// Modtag: D A
 		// Vent 2 sekunder.
-		// Send: DW // Er dette nødvendigt?
-		// Modtag: DW A // Er dette nødvendigt?
 		// Gentag step 1.
 
-		writer.writeBytes("D \"Ukendt operatør.\"");
+		writer.writeBytes("D Ukendt operatør.\r\n");
 		if (!reader.readLine().equals("D A")) {
 			step1error();
 			return;
 		}
 		Thread.sleep(2000);
-		writer.writeBytes("DW");
-		if (!reader.readLine().equals("DW A")) {
-			step1error();
-			return;
-		}
 		step1();
 
 	}
@@ -100,7 +93,7 @@ public class Controller {
 		// Step 2. Identificer vare.
 		// -------------------------
 		
-		writer.writeBytes("RM20 4 \"Vare nummer:\" \"\" \"\""); // Send: RM20 4 "Vare nummer:" "" ""
+		writer.writeBytes("RM20 4 \"Vare nummer:\" \" \" \" \"\r\n"); // Send: RM20 4 "Vare nummer:" "" ""
 		reader.readLine().equals("RM20 B"); 	// Modtag: RM20 B
 		String response = RM20(reader.readLine()); // Modtag: RM20 A "#" // # er den indtastede værdi.
 		// Valider input og retuner til step 1 eller forsæt til step 3.
@@ -399,7 +392,7 @@ public class Controller {
 	
 	private String RM20(String line) {
 
-		final Pattern pattern = Pattern.compile("^RM20 A \"([^\"]*)\"$");
+		final Pattern pattern = Pattern.compile("^RM20 A ([^\"]*)$");
 
 		Matcher matcher = pattern.matcher(line);
 		if (!matcher.matches()) {
