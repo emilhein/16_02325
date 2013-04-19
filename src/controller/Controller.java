@@ -124,13 +124,13 @@ public class Controller {
 		// Gentag step 2.
 		//
 
-		writer.writeBytes("D \"Ukendt vare.\"");
+		writer.writeBytes("D \"Ukendt vare.\" \r\n");
 		if (!reader.readLine().equals("D A")) {	
 			step2error();
 			return;
 		}
 		Thread.sleep(2000);
-		writer.writeBytes("DW");
+		writer.writeBytes("DW\r\n");
 		if (!reader.readLine().equals("DW A")) {	
 			step2error();
 			return;
@@ -146,7 +146,7 @@ public class Controller {
 		// Modtag:	RM20 A "#" // # er den indtastede værdi.
 		// Valider input og retuner til step 2 eller fortsæt til step 4.
 		
-		writer.writeBytes("RM20 4 \"Korrekt vare?\" \""  + productname + "\" \"1/0\"");
+		writer.writeBytes("RM20 4 \"Korrekt vare?\" \""  + productname + "\" \"1/0\"\r\n");
 		if (!reader.readLine().equals("RM20 B")) {	
 			step3error(productname);
 			return;
