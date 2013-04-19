@@ -98,7 +98,8 @@ public class Controller {
 			step2error();
 		}
 		int item = Integer.parseInt(response);
-		step3(getProductName(item));	
+		getProductName(item);
+		step3();	
 		}
 			
 
