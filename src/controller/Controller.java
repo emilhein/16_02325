@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.Scanner;
@@ -60,7 +61,7 @@ public class Controller {
 			return;
 		}
 		String response = RM20(reader.readLine());
-		if (response == null) {
+		if (response == null || !response.matches("^[0-9]+$") || getOperatorName(Integer.parseInt(response)) == null) {
 			step1error();
 			return;
 		}
@@ -68,7 +69,7 @@ public class Controller {
 
 	}
 
-	private void step1error() {
+	private void step1error() throws Exception {
 
 		// Step 1. Fejlet.
 		// ---------------
@@ -78,6 +79,18 @@ public class Controller {
 		// Send: DW // Er dette nødvendigt?
 		// Modtag: DW A // Er dette nødvendigt?
 		// Gentag step 1.
+
+		writer.writeBytes("D \"Ukendt operatør.\"");
+		if (!reader.readLine().equals("D A")) {
+			step1error();
+			return;
+		}
+		Thread.sleep(2000);
+		writer.writeBytes("DW");
+		if (!reader.readLine().equals("DW A")) {
+			step1error();
+			return;
+		}
 
 	}
 
