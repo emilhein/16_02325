@@ -91,6 +91,7 @@ public class Controller {
 			step1error();
 			return;
 		}
+		step1();
 
 	}
 
@@ -99,25 +100,26 @@ public class Controller {
 		// Step 2. Identificer vare.
 		// -------------------------
 		
-	
-		
-		
 		writer.writeBytes("RM20 4 \"Vare nummer:\" \"\" \"\""); // Send: RM20 4 "Vare nummer:" "" ""
 		reader.readLine().equals("RM20 B"); 	// Modtag: RM20 B
 		String response = RM20(reader.readLine()); // Modtag: RM20 A "#" // # er den indtastede værdi.
 		// Valider input og retuner til step 1 eller forsæt til step 3.
 		
-		if (response == null){
+		if (response == null || !response.matches("^[0-9]+$")){
 			step2error();
+			return;
+		} else if (response.equals("0")) {
+			step1();
+			return;
 		}
-		int item = Integer.parseInt(response);
-		String exists = getProductName(item);
+		String exists = getProductName(Integer.parseInt(response));
 		if(exists == null){
 			step2error();
+			return;
 		}
-		step3(exists);	
-		}
-			
+		step3(exists);
+		
+	}		
 
 	private void step2error() throws Exception {
 		// // Step 2. Fejlet.
@@ -128,8 +130,8 @@ public class Controller {
 		// Modtag: DW A // Er dette nødvendigt?
 		// Gentag step 2.
 		//
-		System.out.println("Ugyldigt input i step2");
-		writer.writeBytes("D \"ugyldigt input.\"");
+
+		writer.writeBytes("D \"Ukendt vare.\"");
 		if (!reader.readLine().equals("D A")) {	
 			step2error();
 			return;
@@ -140,11 +142,9 @@ public class Controller {
 			step2error();
 			return;
 		}
-		
 		step2();
-		}
 
-
+	}
 
 	private void step3(String productname) throws Exception {
 		// // Step 3. Bekræft vare.
@@ -153,24 +153,26 @@ public class Controller {
 		// Modtag:	RM20 A "#" // # er den indtastede værdi.
 		// Valider input og retuner til step 2 eller fortsæt til step 4.
 		
-		// hvor skal jeg vide hvad vare navnet er ??
 		writer.writeBytes("RM20 4 \"Korrekt vare?\" \""  + productname + "\" \"1/0\"");
 		if (!reader.readLine().equals("RM20 B")) {	
 			step3error(productname);
 			return;
 		}
-
-		
 		String response = RM20(reader.readLine());
 		if (response == null) {
 			step3error(productname);
 			return;
 		}
-		if (!response.equals("1")) {
+		if (response.equals("0")) {
 			step2();
 			return;
+		} else if (response.equals("1")) {
+			step4();
+			return;
+		} else {
+			step3error(productname);
+			return;
 		}
-		step4();
 		
 	}
 	private void step3error(String Productname) throws Exception {
@@ -182,25 +184,22 @@ public class Controller {
 		// Modtag:	DW A // Er dette nødvendigt?
 		// Gentag step 3.
 		// 	
-		System.out.println("Ugyldigt input i step3");
-		writer.writeBytes("D \"ugyldigt input.\"");
+
+		writer.writeBytes("D \"Ugyldigt input.\"");
 		if (!reader.readLine().equals("D A")) {	
 			step3error(Productname);
 			return;
 		}
-		
-		System.out.println("vent to sekunder!!");
+		Thread.sleep(2000);
 		writer.writeBytes("DW");
 		if (!reader.readLine().equals("DW A")) {	
 			step3error(Productname);
 			return;
 		}
-		
 		step3(Productname);
+		
 	}
 	
-
-
 	private void step4() throws Exception {
 		// // Step 4. Tarer vægt.
 		// Send: RM20 4 "Placer skål på vægten." "" "1/0"
