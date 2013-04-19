@@ -180,13 +180,13 @@ public class Controller {
 		// Gentag step 3.
 		// 	
 
-		writer.writeBytes("D \"Ugyldigt input.\"");
+		writer.writeBytes("D \"Ugyldigt input.\"\r\n");
 		if (!reader.readLine().equals("D A")) {	
 			step3error(Productname);
 			return;
 		}
 		Thread.sleep(2000);
-		writer.writeBytes("DW");
+		writer.writeBytes("DW\r\n");
 		if (!reader.readLine().equals("DW A")) {	
 			step3error(Productname);
 			return;
@@ -207,7 +207,7 @@ public class Controller {
 		String response = "";
 		step4loop: while(true){
 			// Send: RM20 4 "Placer skål på vægten." "" "1/0"
-			writer.writeBytes("RM20 4 \"Placer skål på vægten.\" \"\" \"1/0\"");
+			writer.writeBytes("RM20 4 \"Placer skål på vægten.\" \"\" \"1/0\"\r\n");
 
 			// Modtag: RM20 B
 			if (!reader.readLine().equals("RM20 B")) {
@@ -251,7 +251,7 @@ public class Controller {
 		// Modtag: DW A // Er dette nødvendigt?
 		// Gentag step 4.
 		//
-		writer.writeBytes("D \"ugyldigt input.\"");
+		writer.writeBytes("D \"ugyldigt input.\"\r\n");
 
 		if (!reader.readLine().equals("D A")) {
 			step1error();
@@ -277,7 +277,7 @@ public class Controller {
 		String response = "";
 		step5loop: while(true){
 			// Send: RM20 4 "Placer vare i skålen." "" "1/0"
-			writer.writeBytes("RM20 4 \"Placer vare i skålen.\" \"\" \"1/0\"");
+			writer.writeBytes("RM20 4 \"Placer vare i skålen.\" \"\" \"1/0\"\r\n");
 
 			// Modtag: RM20 B
 			if (!reader.readLine().equals("RM20 B")) {
@@ -305,7 +305,7 @@ public class Controller {
 			step4();
 		
 		// Send: S
-		writer.writeBytes("S");
+		writer.writeBytes("S\r\n");
 
 		// Modtag: S S # kg // # er netto vægten, punktum bruges som decimaltegn.
 		String Netto = S(reader.readLine());
@@ -315,7 +315,7 @@ public class Controller {
 	private void step5error() throws Exception{
 		// // Step 5. Fejlet.
 		// Send: D "Ugyldigt input."
-		writer.writeBytes("D \"ugyldigt input.\"");
+		writer.writeBytes("D \"ugyldigt input.\"\r\n");
 
 		// Modtag: D A
 		if (!reader.readLine().equals("D A")) {
@@ -353,7 +353,7 @@ public class Controller {
 					// Send:	DW // Er dette nødvendigt?
 					// Modtag:	DW A // Er dette nødvendigt?
 					// Opdater lagerbeholdningen, skriv til loggen og retuner til step 1.
-		writer.writeBytes("RM20 4 \"Ryd vægten:\" \"\" \"\"");
+		writer.writeBytes("RM20 4 \"Ryd vægten:\" \"\" \"\"\r\n");
 		if (reader.readLine().equals("RM20 B")) {
 			String response = RM20(reader.readLine());
 			if (response == null) {
