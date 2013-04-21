@@ -26,7 +26,8 @@ public class Controller {
 	String operatorName = null;
 	int productNumber = 0;
 	String productName = null;
-
+	String sti = "log.txt";
+	
 	public Controller() {
 
 		try {
@@ -57,7 +58,7 @@ public class Controller {
 	}
 
 	private void step1() throws Exception {
-
+		writeFile(sti);
 		// Step 1. Identificer operatør.
 		// -----------------------------
 		// Send: RM20 4 "Operatør nummer:" "" ""
@@ -81,6 +82,7 @@ public class Controller {
 			step1error();
 			return;
 		}
+		System.out.println("Operatørnummer: " + operatorNumber+ " " + "Operatørnavn: " + operatorName);
 		step2();
 
 	}
@@ -105,7 +107,7 @@ public class Controller {
 	}
 
 	private void step2() throws Exception {
-
+		writeFile(sti);
 		// Step 2. Identificer vare.
 		// -------------------------
 		// Send: RM20 4 "Vare nummer:" "" ""
@@ -130,6 +132,8 @@ public class Controller {
 			step2error();
 			return;
 		}
+		System.out.println("Produktnummer: " + productNumber+ " " + "Produktnavn: " + productName);
+
 		step3();
 		
 	}		
@@ -244,7 +248,7 @@ public class Controller {
 			step3();
 		
 		// Send: S
-		writer.writeBytes("T");
+		writer.writeBytes("T\r\n");
 
 		// Modtag: T T # kg // # er den nye tara vægten, punktum bruges som decimaltegn.
 		String Tara = T(reader.readLine());
