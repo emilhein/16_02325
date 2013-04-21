@@ -179,7 +179,7 @@ public class Controller {
 		if (response.equals("0")) {
 			step2();
 			return;
-		} else if (response.equals("1")) {
+		}else if (response.equals("1")) {
 			step4();
 			return;
 		} else {
@@ -218,7 +218,7 @@ public class Controller {
 		// Modtag: T S # kg // # er den nye tara, punktum bruges som
 		// decimaltegn.
 		String response = "";
-		step4loop: while(true){
+		
 			// Send: RM20 4 "Placer skål på vægten." "" "1/0"
 			writer.writeBytes("RM20 4 \"Placer skål på vægten.\" \"\" \"1/0\"\r\n");
 
@@ -227,31 +227,31 @@ public class Controller {
 				step4error();
 				return;
 			}
-
+			
 			// Modtag: RM20 A "#" // # er den indtastede værdi.
 			response = RM20(reader.readLine());
+			
 			if (response == null) {
 				step4error();
 				return;
 			}
 
 			// Valider input og retuner til step 3 eller fortsæt.
-			if(response.equals("0") || response.equals("1"))
-			{
-				break step4loop;
-			}
-			step4error();
+			writer.writeBytes("RM20 4 \"Korrekt vægt?\" \""  + response + "\" \"1/0\"\r\n");
 
-		}
+			String Tara = T(reader.readLine());	
 		
-		if(response.equals("0"))
+		
+		if(Tara.equals("0"))
 			step3();
+		if(Tara.equals("1"))
+			step5();
 		
 		// Send: S
-		writer.writeBytes("T\r\n");
+		writer.writeBytes("S\r\n");
 
 		// Modtag: T T # kg // # er den nye tara vægten, punktum bruges som decimaltegn.
-		String Tara = T(reader.readLine());
+		
 		
 	}
 
