@@ -2,10 +2,13 @@ package controller;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -201,7 +204,7 @@ public class Controller {
 		
 	}
 	
-	private void step4(String Productname) throws Exception {
+	private void step4() throws Exception {
 		// // Step 4. Tarer vægt.
 		// Send: RM20 4 "Placer skål på vægten." "" "1/0"
 		// Modtag: RM20 B
@@ -238,7 +241,7 @@ public class Controller {
 		}
 		
 		if(response.equals("0"))
-			step3(Productname);
+			step3();
 		
 		// Send: S
 		writer.writeBytes("T");
@@ -476,6 +479,18 @@ public class Controller {
 		}
 		return matcher.group(1);
 
+	}
+	public static void writeFile(String sti) {
+		File filee = new File(sti);
+		FileOutputStream fis = null;
+		try {
+			fis = new FileOutputStream(filee, true); // will append (continue to write the file, instead of overwriting it)
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		PrintStream ud = new PrintStream(fis);
+		System.setOut(ud);
 	}
 
 }
