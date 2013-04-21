@@ -482,14 +482,14 @@ public class Controller {
 	}
 	public static void writeFile(String sti) {
 		File filee = new File(sti);
-		FileOutputStream fis = null;
+		FileOutputStream write = null;
 		try {
-			fis = new FileOutputStream(filee, true); // will append (continue to write the file, instead of overwriting it)
+			write = new FileOutputStream(filee, true); // will append (continue to write the file, instead of overwriting it)
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		PrintStream ud = new PrintStream(fis);
+		PrintStream ud = new PrintStream(write);
 		System.setOut(ud);
 	}
 
