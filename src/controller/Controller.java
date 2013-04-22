@@ -13,6 +13,7 @@ import java.net.Socket;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Date;
 
 import javax.xml.ws.Response;
 
@@ -59,6 +60,7 @@ public class Controller {
 
 	private void step1() throws Exception {
 		writeFile(sti);
+		Date date = new Date();
 		// Step 1. Identificer operatør.
 		// -----------------------------
 		// Send: RM20 4 "Operatør nummer:" "" ""
@@ -82,7 +84,8 @@ public class Controller {
 			step1error();
 			return;
 		}
-		System.out.println("Operatørnummer: " + operatorNumber+ " " + "Operatørnavn: " + operatorName);
+		System.out.print(date + " ");
+		System.out.print("Operatørnummer: " + operatorNumber+ " " + "Operatørnavn: " + operatorName);
 		step2();
 
 	}
@@ -132,7 +135,7 @@ public class Controller {
 			step2error();
 			return;
 		}
-		System.out.println("Produktnummer: " + productNumber+ " " + "Produktnavn: " + productName);
+		System.out.print("Produktnummer: " + productNumber+ " " + "Produktnavn: " + productName);
 
 		step3();
 		
@@ -217,11 +220,10 @@ public class Controller {
 		// Send: T
 		// Modtag: T S # kg // # er den nye tara, punktum bruges som
 		// decimaltegn.
-		String response = "";
 		
 			// Send: RM20 4 "Placer skål på vægten." "" "1/0"
-			writer.writeBytes("RM20 4 \"Placer skål på vægten.\" \"\" \"1/0\"\r\n");
-
+		writer.writeBytes("RM20 4 \"Placer skålen på vægten:(indtast vægt)\" \" \" \" \"\r\n");
+			
 			// Modtag: RM20 B
 			if (!reader.readLine().equals("RM20 B")) {
 				step4error();
@@ -229,7 +231,7 @@ public class Controller {
 			}
 			
 			// Modtag: RM20 A "#" // # er den indtastede værdi.
-			response = RM20(reader.readLine());
+			String response = RM20(reader.readLine());
 			
 			if (response == null) {
 				step4error();

@@ -1,20 +1,8 @@
-Operatørnummer: 1 Operatørnavn: Bo
+Sun Apr 21 20:26:22 CEST 2013Operatørnummer: 1 Operatørnavn: Bo
+Produktnummer: 1 Produktnavn: Badesalt
+Error: null
+Sun Apr 21 20:27:31 CEST 2013 Operatørnummer: 2 Operatørnavn: IbProduktnummer: 2 Produktnavn: hund
 Produktnummer: 5 Produktnavn: gris
-Produktnummer: 6 Produktnavn: amfetamin
-Produktnummer: 2 Produktnavn: hund
-Operatørnummer: 1 Operatørnavn: Bo
-Produktnummer: 1 Produktnavn: Badesalt
-Produktnummer: 6 Produktnavn: amfetamin
-Operatørnummer: 1 Operatørnavn: Bo
-Produktnummer: 2 Produktnavn: hund
-Operatørnummer: 1 Operatørnavn: Bo
-Produktnummer: 2 Produktnavn: hund
-Operatørnummer: 1 Operatørnavn: Bo
-Produktnummer: 2 Produktnavn: hund
-Produktnummer: 6 Produktnavn: amfetamin
-Operatørnummer: 1 Operatørnavn: Bo
-Produktnummer: 1 Produktnavn: Badesalt
-Error: Connection reset by peer: socket write error
-Error: Connection reset by peer: socket write error
-Operatørnummer: 1 Operatørnavn: Bo
-Produktnummer: 1 Produktnavn: Badesalt
+Error: null
+Sun Apr 21 20:43:57 CEST 2013 Operatørnummer: 1 Operatørnavn: BoProduktnummer: 1 Produktnavn: BadesaltError: null
+Error: Connection reset
