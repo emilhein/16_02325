@@ -352,7 +352,7 @@ public class Controller {
 		
 		//# TODO: Mangler noget kode her...
 		
-		log(new Date() + "," + operatorNumber + "," + operatorName + "," + productNumber + "," + productNumber + "," + tara + "," + netto);
+		log(new Date() + "," + operatorNumber + "," + operatorName + "," + productNumber + "," + productName + "," + tara + "," + netto);
 		step1();
 		
 	}

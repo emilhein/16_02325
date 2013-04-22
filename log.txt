@@ -7,3 +7,5 @@ Error: null
 Sun Apr 21 20:43:57 CEST 2013 Operatørnummer: 1 Operatørnavn: BoProduktnummer: 1 Produktnavn: BadesaltError: null
 Error: Connection reset
 Mon Apr 22 15:30:43 CEST 2013 Operatørnummer: 1 Operatørnavn: BoProduktnummer: 2 Produktnavn: hundError: null
+Mon Apr 22 16:00:15 CEST 2013,1,Bo,1,1,0.0,0.0
+Mon Apr 22 16:05:25 CEST 2013,1,Bo,5,gris,0.0,0.0
