@@ -6,3 +6,4 @@ Produktnummer: 5 Produktnavn: gris
 Error: null
 Sun Apr 21 20:43:57 CEST 2013 Operatørnummer: 1 Operatørnavn: BoProduktnummer: 1 Produktnavn: BadesaltError: null
 Error: Connection reset
+Mon Apr 22 15:30:43 CEST 2013 Operatørnummer: 1 Operatørnavn: BoProduktnummer: 2 Produktnavn: hundError: null

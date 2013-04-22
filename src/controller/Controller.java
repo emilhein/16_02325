@@ -215,7 +215,7 @@ public class Controller {
 		// Send: T
 		// Modtag: T S # kg // # er den nye tara, punktum bruges som decimaltegn.
 		
-		writer.writeBytes("RM20 4 \"Placer skålen på vægten.\" \" \" \" \"\r\n");	
+		writer.writeBytes("RM20 4 \"Placer skålen på vægten.\" \" \" \"1/0\"\r\n");	
 		if (!reader.readLine().equals("RM20 B")) {
 			step4error();
 			return;
