@@ -474,7 +474,7 @@ public class Controller {
 
 	private String T(String line) {
 
-		final Pattern pattern = Pattern.compile("^T S ([0-9]*\\.?[0-9]+) kg$");
+		final Pattern pattern = Pattern.compile("^T S +([0-9]*\\.?[0-9]+) kg$");
 
 		Matcher matcher = pattern.matcher(line);
 		if (!matcher.matches()) {
@@ -486,7 +486,7 @@ public class Controller {
 	
 	private String S(String line) {
 
-		final Pattern pattern = Pattern.compile("^S S ([0-9]*\\.?[0-9]+) kg$");
+		final Pattern pattern = Pattern.compile("^S S +([0-9]*\\.?[0-9]+) kg$");
 
 		Matcher matcher = pattern.matcher(line);
 		if (!matcher.matches()) {
