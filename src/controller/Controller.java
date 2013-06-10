@@ -30,10 +30,10 @@ public class Controller {
 
 		try {
 
-			socket = new Socket("localhost", 4567);
+			socket = new Socket("169.254.2.2", 8000);
 			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			writer = new DataOutputStream(socket.getOutputStream());
-
+			System.out.println("test" + reader.readLine());
 			step1();
 
 		} catch (Exception e) {
@@ -65,6 +65,7 @@ public class Controller {
 		// Valider input og fortsæt til step 2.
 
 		writer.writeBytes("RM20 4 \"Operatør nummer:\" \" \" \" \"\r\n");
+		
 		if (!reader.readLine().equals("RM20 B")) {
 			step1error();
 			return;
@@ -143,7 +144,7 @@ public class Controller {
 		// Vent 2 sekunder.
 		// Gentag step 2.
 
-		writer.writeBytes("D Ukendt vare.\r\n");
+		writer.writeBytes("D \"Ukendt\"\r\n");
 		if (!reader.readLine().equals("D A")) {	
 			step2error();
 			return;
@@ -162,7 +163,7 @@ public class Controller {
 		// Modtag:	RM20 A # // # er den indtastede værdi.
 		// Valider input og retuner til step 2 eller fortsæt til step 4.
 		
-		writer.writeBytes("RM20 4 \"Korrekt vare?\" \""  + productName + "\" \"1/0\"\r\n");
+		writer.writeBytes("RM20 4 \"Korrekt vare? " + productName + "\" \"\" \"1/0\"\r\n");
 		if (!reader.readLine().equals("RM20 B")) {	
 			step3error();
 			return;
@@ -462,7 +463,7 @@ public class Controller {
 	
 	private String RM20(String line) {
 
-		final Pattern pattern = Pattern.compile("^RM20 A ([^\"]*)$");
+		final Pattern pattern = Pattern.compile("^RM20 A \"([^\"]*)\"$");
 
 		Matcher matcher = pattern.matcher(line);
 		if (!matcher.matches()) {

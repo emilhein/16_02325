@@ -13,3 +13,5 @@ Mon Apr 22 16:12:10 CEST 2013,1,Bo,1,Badesalt,0.0,0.0
 Mon Apr 22 16:12:11 CEST 2013,1,Bo,1,Badesalt,0.0,0.0
 Mon Apr 22 16:12:13 CEST 2013,1,Bo,1,Badesalt,0.0,0.0
 Mon Apr 22 16:12:14 CEST 2013,1,Bo,1,Badesalt,0.0,0.0
+Mon Jun 10 12:19:50 CEST 2013,3,Kim,4,ko,0.004,0.002
+Mon Jun 10 12:25:33 CEST 2013,1,Bo,5,gris,0.01,0.002
